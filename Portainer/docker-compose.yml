@@ -33,7 +33,7 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.portainer.rule=Host(`manage.48n.in`)"
         - "traefik.http.routers.portainer.entrypoints=websecure"
-        - "traefik.http.routers.whoami.tls.certresolver=myhttpchallenge"
+        - "traefik.http.routers.portainer.tls.certresolver=myhttpchallenge"
         # Uncomment this label if your Traefik instance is using a specific Docker network and replace the network name 
         # This is not necessary if you set your default network in Traefik config/parameters
         # - "traefik.docker.network=your-traefik-network-name"
