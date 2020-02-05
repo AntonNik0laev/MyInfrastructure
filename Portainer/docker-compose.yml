@@ -1,0 +1,40 @@
+version: "2"
+
+services:
+    traefik:
+      image: "traefik:2.0"
+      command:
+        - "--providers.docker=true"
+        - "--providers.docker.exposedbydefault=false"
+        - "--entrypoints.web.address=:80"
+        - "--api.insecure"
+      ports:
+        - "80:80"
+        - "8080:8080"
+      volumes:
+        - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      networks: 
+        - traefik_proxy
+  
+    portainer:
+      image: portainer/portainer
+      restart: always
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - portainer_data:/data
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.portainer.rule=Host(`windows.local`)"
+        - "traefik.http.routers.portainer.entrypoints=web"
+        # Uncomment this label if your Traefik instance is using a specific Docker network and replace the network name 
+        # This is not necessary if you set your default network in Traefik config/parameters
+        # - "traefik.docker.network=your-traefik-network-name"
+      networks: 
+        - traefik_proxy
+volumes:
+    portainer_data:
+
+networks:
+  traefik_proxy:
+    external:
+      name: traefik_proxy

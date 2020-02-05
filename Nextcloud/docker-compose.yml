@@ -1,0 +1,66 @@
+version: '2'
+
+services:
+  db:
+    image: postgres:alpine
+    restart: always
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment: 
+        - POSTGRES_PASSWORD=q,}&YdUPmxvdRa6y>+>iV*w}
+        - POSTGRES_DB=nextcloud
+        - POSTGRES_USER=nextcloud
+    networks: 
+        - internal
+  redis:
+    image: redis:alpine
+    restart: always
+    networks: 
+        - internal
+
+  app:
+    image: nextcloud:apache
+    restart: always
+    volumes:
+        - nextcloud:/var/www/html
+    environment:
+        - POSTGRES_HOST=db
+        - REDIS_HOST=redis
+        - POSTGRES_PASSWORD=q,}&YdUPmxvdRa6y>+>iV*w}
+        - POSTGRES_DB=nextcloud
+        - POSTGRES_USER=nextcloud
+    depends_on:
+        - db
+        - redis
+    labels: 
+        - "traefik.enable=true"
+        - "traefik.http.routers.nextcloud.rule=Host(`windows.local.nextcloud`)"
+        - "traefik.http.routers.nextcloud.entrypoints=web"
+        - "traefik.port=80"
+        - "traefik.docker.network=traefik_proxy"
+    networks: 
+        - traefik_proxy
+        - internal
+
+  cron:
+    image: nextcloud:apache
+    restart: always
+    volumes:
+      - nextcloud:/var/www/html
+    entrypoint: /cron.sh
+    depends_on:
+      - db
+      - redis
+    networks: 
+        - internal
+volumes:
+  db:
+  nextcloud:
+
+networks:
+  traefik_proxy:
+    external:
+      name: traefik_proxy
+  internal:
+    driver: bridge
+    external: false
