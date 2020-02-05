@@ -40,18 +40,18 @@ services:
       networks: 
         - traefik_proxy
 volumes:
-  portainer_data:
-    driver: local
-      driver_opts: 
-        type: 'none'
-        o: 'bind'
-        device: '/datadrive/portainer'
-  letsencrypt:
-    driver: local
-        driver_opts: 
+    portainer_data:
+        driver: local
+            driver_opts: 
             type: 'none'
             o: 'bind'
-            device: '/datadrive/letsencrypt'
+            device: '/datadrive/portainer'
+  letsencrypt:
+        driver: local
+            driver_opts: 
+                type: 'none'
+                o: 'bind'
+                device: '/datadrive/letsencrypt'
 
 networks:
   traefik_proxy:
