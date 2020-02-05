@@ -1,0 +1,34 @@
+version: "2"
+services:
+  hastebin:
+    image: rlister/hastebin
+    environment:
+      STORAGE_TYPE: redis
+      STORAGE_HOST: hastebinredis
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.hastebin_insecure.entrypoints=web"
+        - "traefik.http.routers.hastebin_insecure.rule=Host(`paste.48n.in`)"
+        - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.hastebin_insecure.middlewares=https-redirect"
+        - "traefik.http.routers.hastebin.rule=Host(`paste.48n.in`)"
+        - "traefik.http.routers.hastebin.entrypoints=websecure"
+        - "traefik.http.routers.hastebin.tls.certresolver=myhttpchallenge"
+        - "traefik.docker.network=traefik_proxy"
+    networks:
+    - internal
+    - traefik_proxy
+  hastebinredis:
+    image: redis
+    volumes:
+      - ./data:/data
+    networks:
+      - internal
+networks:
+  traefik_proxy:
+    external:
+      name: traefik_proxy
+  internal:
+    driver: bridge
+    external: false
+entrypoint: redis-server --appendonly yes
