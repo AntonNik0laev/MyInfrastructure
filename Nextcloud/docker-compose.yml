@@ -34,10 +34,19 @@ services:
         - redis
     labels: 
         - "traefik.enable=true"
+        - "traefik.http.routers.nextcloud.entrypoints=web"
         - "traefik.http.routers.nextcloud.rule=Host(`s.48n.in`)"
-        - "traefik.http.routers.nextcloud.entrypoints=websecure"
-        - "traefik.http.routers.nextcloud.tls.certresolver=myhttpchallenge"
-        - "traefik.port=80"
+        - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.nextcloud.middlewares=https-redirect"
+        - "traefik.http.routers.nextcloud-secure.entrypoints=websecure"
+        - "traefik.http.routers.nextcloud-secure.rule=Host(`s.48n.in`)"
+        - "traefik.http.middlewares.nc-rep.redirectregex.regex=https://(.*)/.well-known/(card|cal)dav"
+        - "traefik.http.middlewares.nc-rep.redirectregex.replacement=https://$$1/remote.php/dav/"
+        - "traefik.http.middlewares.nc-rep.redirectregex.permanent=true"
+        - "traefik.http.middlewares.nc-header.headers.customFrameOptionsValue=SAMEORIGIN"
+        - "traefik.http.routers.nextcloud-secure.middlewares=nc-rep,nc-header"
+        - "traefik.http.routers.nextcloud-secure.tls=true"
+        - "traefik.http.routers.nextcloud-secure.tls.certresolver=myhttpchallenge"
         - "traefik.docker.network=traefik_proxy"
     networks: 
         - traefik_proxy
