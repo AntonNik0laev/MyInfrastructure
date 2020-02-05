@@ -4,9 +4,16 @@ services:
     traefik:
       image: "traefik:2.0"
       command:
+        - "--api.insecure=true"
         - "--providers.docker=true"
         - "--providers.docker.exposedbydefault=false"
         - "--entrypoints.web.address=:80"
+        - "--entrypoints.websecure.address=:443"
+        - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
+        - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=web"
+        #- "--certificatesresolvers.myhttpchallenge.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+        - "--certificatesresolvers.myhttpchallenge.acme.email=re_b_e_l@mail.ru"
+        - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
       ports:
         - "80:80"
         - "8080:8080"
@@ -24,7 +31,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.portainer.rule=Host(`manage.48n.in`)"
-        - "traefik.http.routers.portainer.entrypoints=web"
+        - "traefik.http.routers.portainer.entrypoints=websecure"
         # Uncomment this label if your Traefik instance is using a specific Docker network and replace the network name 
         # This is not necessary if you set your default network in Traefik config/parameters
         # - "traefik.docker.network=your-traefik-network-name"
@@ -32,6 +39,17 @@ services:
         - traefik_proxy
 volumes:
     portainer_data:
+        driver: local
+        driver_opts: 
+            type: 'none'
+            o: 'bind'
+            device: '/datadrive/portainer'
+    letsencrypt:
+        driver: local
+        driver_opts: 
+            type: 'none'
+            o: 'bind'
+            device: '/datadrive/letsencrypt'
 
 networks:
   traefik_proxy:

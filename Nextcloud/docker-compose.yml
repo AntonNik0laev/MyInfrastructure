@@ -5,7 +5,7 @@ services:
     image: postgres:alpine
     restart: always
     volumes:
-      - db:/datadrive/nextcloud/db/postgresql/data
+      - db:/var/lib/postgresql/data
     environment: 
         - POSTGRES_PASSWORD=q,}&YdUPmxvdRa6y>+>iV*w}
         - POSTGRES_DB=nextcloud
@@ -22,7 +22,7 @@ services:
     image: nextcloud:apache
     restart: always
     volumes:
-        - nextcloud:/datadrive/nextcloud/files
+        - nextcloud:/var/www/html
     environment:
         - POSTGRES_HOST=db
         - REDIS_HOST=redis
@@ -35,7 +35,7 @@ services:
     labels: 
         - "traefik.enable=true"
         - "traefik.http.routers.nextcloud.rule=Host(`s.48n.in`)"
-        - "traefik.http.routers.nextcloud.entrypoints=web"
+        - "traefik.http.routers.nextcloud.entrypoints=web,websecure"
         - "traefik.port=80"
         - "traefik.docker.network=traefik_proxy"
     networks: 
