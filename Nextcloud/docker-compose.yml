@@ -55,8 +55,18 @@ services:
     networks: 
         - internal
 volumes:
-  db:
-  nextcloud:
+    nextcloud_db:
+        driver: local
+        driver_opts: 
+            type: 'none'
+            o: 'bind'
+            device: '/datadrive/nextcloud/db'
+    nextcloud_data:
+        driver: local
+        driver_opts: 
+            type: 'none'
+            o: 'bind'
+            device: '/datadrive/nextcloud/files'
 
 networks:
   traefik_proxy:
