@@ -35,7 +35,8 @@ services:
     labels: 
         - "traefik.enable=true"
         - "traefik.http.routers.nextcloud.rule=Host(`s.48n.in`)"
-        - "traefik.http.routers.nextcloud.entrypoints=web,websecure"
+        - "traefik.http.routers.nextcloud.entrypoints=websecure"
+        - "traefik.http.routers.whoami.tls.certresolver=myhttpchallenge"
         - "traefik.port=80"
         - "traefik.docker.network=traefik_proxy"
     networks: 
