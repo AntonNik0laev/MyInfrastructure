@@ -15,10 +15,10 @@ services:
         - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
         # middleware redirect  
         - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"  
-        # global redirect to https  
-        - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"  
-        - "traefik.http.routers.redirs.entrypoints=web"  
-        - "traefik.http.routers.redirs.middlewares=redirect-to-https"  
+        # global redirect to https
+        - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+        - "traefik.http.routers.http-catchall.entrypoints=web"
+        - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       ports:
         - "80:80"
         - "443:443"
