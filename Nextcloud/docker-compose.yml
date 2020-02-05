@@ -5,7 +5,7 @@ services:
     image: postgres:alpine
     restart: always
     volumes:
-      - db:/var/lib/postgresql/data
+      - db:/datadrive/nextcloud/db/postgresql/data
     environment: 
         - POSTGRES_PASSWORD=q,}&YdUPmxvdRa6y>+>iV*w}
         - POSTGRES_DB=nextcloud
@@ -22,7 +22,7 @@ services:
     image: nextcloud:apache
     restart: always
     volumes:
-        - nextcloud:/var/www/html
+        - nextcloud:/datadrive/nextcloud/files
     environment:
         - POSTGRES_HOST=db
         - REDIS_HOST=redis
