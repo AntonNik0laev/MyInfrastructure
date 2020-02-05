@@ -34,7 +34,7 @@ services:
         - redis
     labels: 
         - "traefik.enable=true"
-        - "traefik.http.routers.nextcloud.rule=Host(`windows.local.nextcloud`)"
+        - "traefik.http.routers.nextcloud.rule=Host(`s.48n.in`)"
         - "traefik.http.routers.nextcloud.entrypoints=web"
         - "traefik.port=80"
         - "traefik.docker.network=traefik_proxy"
