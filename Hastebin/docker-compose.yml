@@ -8,10 +8,10 @@ services:
     labels:
         - "traefik.enable=true"
         - "traefik.http.routers.hastebin_insecure.entrypoints=web"
-        - "traefik.http.routers.hastebin_insecure.rule=Host(`paste.48n.in`)"
+        - "traefik.http.routers.hastebin_insecure.rule=Host(`paste.48b.co`)"
         - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
         - "traefik.http.routers.hastebin_insecure.middlewares=https-redirect"
-        - "traefik.http.routers.hastebin.rule=Host(`paste.48n.in`)"
+        - "traefik.http.routers.hastebin.rule=Host(`paste.48b.co`)"
         - "traefik.http.routers.hastebin.entrypoints=websecure"
         - "traefik.http.routers.hastebin.tls.certresolver=myhttpchallenge"
         - "traefik.docker.network=traefik_proxy"

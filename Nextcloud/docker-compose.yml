@@ -35,11 +35,11 @@ services:
     labels: 
         - "traefik.enable=true"
         - "traefik.http.routers.nextcloud.entrypoints=web"
-        - "traefik.http.routers.nextcloud.rule=Host(`s.48n.in`)"
+        - "traefik.http.routers.nextcloud.rule=Host(`s.48b.co`)"
         - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
         - "traefik.http.routers.nextcloud.middlewares=https-redirect"
         - "traefik.http.routers.nextcloud-secure.entrypoints=websecure"
-        - "traefik.http.routers.nextcloud-secure.rule=Host(`s.48n.in`)"
+        - "traefik.http.routers.nextcloud-secure.rule=Host(`s.48b.co`)"
         - "traefik.http.middlewares.nc-rep.redirectregex.regex=https://(.*)/.well-known/(card|cal)dav"
         - "traefik.http.middlewares.nc-rep.redirectregex.replacement=https://$$1/remote.php/dav/"
         - "traefik.http.middlewares.nc-rep.redirectregex.permanent=true"
