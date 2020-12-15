@@ -38,12 +38,14 @@ services:
         - "traefik.http.routers.portainer.rule=Host(`manage.48b.co`)"
         - "traefik.http.routers.portainer.entrypoints=websecure"
         - "traefik.http.routers.portainer.tls.certresolver=myhttpchallenge"
+        - "traefik.http.routers.portainer.service=portainer"
         - traefik.http.services.portainer.loadbalancer.server.port=9000
         #edge 
         - "traefik.http.routers.portainer-edge.rule=Host(`portainer-edge.48b.co`)"
         - "traefik.http.routers.portainer-edge.entrypoints=websecure"
         - "traefik.http.routers.portainer-edge.tls.certresolver=myhttpchallenge"
         - traefik.http.services.portainer-edge.loadbalancer.server.port=8000
+        - "traefik.http.routers.portainer-edge.service=portainer-edge"
         - "com.centurylinklabs.watchtower.enable=true"
         # Uncomment this label if your Traefik instance is using a specific Docker network and replace the network name 
         # This is not necessary if you set your default network in Traefik config/parameters
