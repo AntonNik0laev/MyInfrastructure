@@ -12,11 +12,15 @@ services:
         - POSTGRES_USER=nextcloud
     networks: 
         - internal
+    labels: 
+      - "com.centurylinklabs.watchtower.enable=true"
   redis:
     image: redis:alpine
     restart: always
     networks: 
         - internal
+    labels: 
+      - "com.centurylinklabs.watchtower.enable=true"
 
   app:
     image: nextcloud:apache
@@ -48,6 +52,7 @@ services:
         - "traefik.http.routers.nextcloud-secure.tls=true"
         - "traefik.http.routers.nextcloud-secure.tls.certresolver=myhttpchallenge"
         - "traefik.docker.network=traefik_proxy"
+        - "com.centurylinklabs.watchtower.enable=true"
     networks: 
         - traefik_proxy
         - internal
@@ -57,6 +62,8 @@ services:
     restart: always
     volumes:
       - nextcloud_data:/var/www/html
+    labels: 
+      - "com.centurylinklabs.watchtower.enable=true"
     entrypoint: /cron.sh
     depends_on:
       - db
