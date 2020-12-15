@@ -22,9 +22,13 @@ services:
         - "letsencrypt:/letsencrypt"
       networks: 
         - traefik_proxy
+      depends_on: 
+        - watchtower
+      labels: 
+        - "com.centurylinklabs.watchtower.enable=true"
   
     portainer:
-      image: portainer/portainer
+      image: portainer/portainer-ce
       restart: always
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
@@ -34,11 +38,24 @@ services:
         - "traefik.http.routers.portainer.rule=Host(`manage.48n.in`)"
         - "traefik.http.routers.portainer.entrypoints=websecure"
         - "traefik.http.routers.portainer.tls.certresolver=myhttpchallenge"
+        - "com.centurylinklabs.watchtower.enable=true"
         # Uncomment this label if your Traefik instance is using a specific Docker network and replace the network name 
         # This is not necessary if you set your default network in Traefik config/parameters
         # - "traefik.docker.network=your-traefik-network-name"
       networks: 
         - traefik_proxy
+      depends_on: 
+        - watchtower
+       
+    watchtower:
+      command: --label-enable --cleanup --interval 300
+      image: containrrr/watchtower
+      labels:
+        - "com.centurylinklabs.watchtower.enable=true"
+      network_mode: none
+      restart: always
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
 volumes:
     portainer_data:
         driver: local
